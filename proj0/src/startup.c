@@ -195,7 +195,7 @@ void ResetISR(void)
         *pulDest++ = *pulSrc++;
     }
 
-    // Zero fill the bss segment.
+/*    // Zero fill the bss segment.
     __asm("    ldr     r0, =_bss\n"
           "    ldr     r1, =_ebss\n"
           "    mov     r2, #0\n"
@@ -205,7 +205,7 @@ void ResetISR(void)
           "        it      lt\n"
           "        strlt   r2, [r0], #4\n"
           "        blt     zero_loop");
-
+*/
     HardwareInit();
 }
 

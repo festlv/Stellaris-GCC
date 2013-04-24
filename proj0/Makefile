@@ -16,7 +16,7 @@ INCLUDES    = -Isrc/include
 # Path to the root of your ARM toolchain
 
 # Path to the root of your StellarisWare folder
-SW_DIR      = /opt/tivaware/peripherals/
+SW_DIR      = /opt/tivaware/
 
 # Location of a loader script, doesnt matter which one, they're the same
 LD_SCRIPT   = lm4f120h5qr.ld
@@ -50,7 +50,7 @@ CFLAGS     += -DPART_TM4C1233H6PM
 CFLAGS     += -Dgcc
 CFLAGS     += -DTARGET_IS_BLIZZARD_RA1
 CFLAGS     += -fsingle-precision-constant
-CFLAGS     += -I$(SW_DIR) $(INCLUDES)
+CFLAGS     += -I$(SW_DIR)/driverlib/ -I$(SW_DIR) $(INCLUDES)
 
 ifeq ($(FPU),hard)
 	LIBGCC  = $(TOOL)/lib/gcc/arm-none-eabi/4.6.2/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16/libgcc.a
@@ -72,7 +72,7 @@ LDFLAGS    += -T $(LD_SCRIPT)
 LDFLAGS    += --entry ResetISR
 LDFLAGS    += --gc-sections
 LDFLAGS    += -Map .obj/$(TARGET).map
-LDFLAGS    += --cref
+LDFLAGS    += --cref -g
 LDFLAGS    += -nostdlib
 ###############################################################################
 
