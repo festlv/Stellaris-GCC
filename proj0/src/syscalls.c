@@ -1,4 +1,6 @@
 #include <sys/types.h>          //Needed for caddr_t
+#include <stdint.h>
+#include <stdbool.h>
 
 #include "inc/hw_memmap.h"      //Needed for GPIO Pins/UART base
 #include "inc/hw_types.h"       //Needed for SysTick Types

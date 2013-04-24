@@ -14,10 +14,9 @@ SOURCES    += syscalls.c
 INCLUDES    = -Isrc/include
 
 # Path to the root of your ARM toolchain
-TOOL        = ../../../sat/
 
 # Path to the root of your StellarisWare folder
-SW_DIR      = ../StellarisWare/
+SW_DIR      = /opt/tivaware/peripherals/
 
 # Location of a loader script, doesnt matter which one, they're the same
 LD_SCRIPT   = lm4f120h5qr.ld
@@ -31,7 +30,7 @@ ASMS        = $(patsubst %.s, .obj/%.s,$(SOURCES:.c=.s))
 FPU         = softfp
 
 # Remove # to enable verbose
-VERBOSE     = #1
+VERBOSE     = 1
 
 
 # Flag Definitions
@@ -47,7 +46,7 @@ CFLAGS     += -MD
 CFLAGS     += -std=c99
 CFLAGS     += -Wall
 CFLAGS     += -pedantic
-CFLAGS     += -DPART_LM4F120H5QR
+CFLAGS     += -DPART_TM4C1233H6PM
 CFLAGS     += -Dgcc
 CFLAGS     += -DTARGET_IS_BLIZZARD_RA1
 CFLAGS     += -fsingle-precision-constant
@@ -59,10 +58,12 @@ ifeq ($(FPU),hard)
 	LIBC    = $(TOOL)/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16/libc.a
 	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc-cm4f-hard/libdriver-cm4f-hard.a
 else
-	LIBGCC  = $(TOOL)/lib/gcc/arm-none-eabi/4.6.2/thumb/cortex-m4/libgcc.a
-	LIBM    = $(TOOL)/arm-none-eabi/lib/thumb/cortex-m4/libm.a
-	LIBC    = $(TOOL)/arm-none-eabi/lib/thumb/cortex-m4/libc.a
-	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc-cm4f/libdriver-cm4f.a
+
+	LIBGCC  = ${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
+	LIBM    = ${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
+	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
+	
+	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc/libdriver.a
 endif
 
 LIBS        = '$(LIBM)' '$(LIBC)' '$(LIBGCC)' '$(DRIVER_LIB)'
@@ -78,19 +79,19 @@ LDFLAGS    += -nostdlib
 
 # Tool Definitions
 ###############################################################################
-CC          = $(TOOL)/bin/arm-none-eabi-gcc
-LD          = $(TOOL)/bin/arm-none-eabi-ld
-AR          = $(TOOL)/bin/arm-none-eabi-ar
-AS          = $(TOOL)/bin/arm-none-eabi-as
-NM          = $(TOOL)/bin/arm-none-eabi-nm
-OBJCOPY     = $(TOOL)/bin/arm-none-eabi-objcopy
-OBJDUMP     = $(TOOL)/bin/arm-none-eabi-objdump
-RANLIB      = $(TOOL)/bin/arm-none-eabi-ranlib
-STRIP       = $(TOOL)/bin/arm-none-eabi-strip
-SIZE        = $(TOOL)/bin/arm-none-eabi-size
-READELF     = $(TOOL)/bin/arm-none-eabi-readelf
-DEBUG       = $(TOOL)/bin/arm-none-eabi-gdb
-FLASH       = $(TOOL)/bin/lm4flash
+CC          = arm-none-eabi-gcc
+LD          = arm-none-eabi-ld
+AR          = arm-none-eabi-ar
+AS          = arm-none-eabi-as
+NM          = arm-none-eabi-nm
+OBJCOPY     = arm-none-eabi-objcopy
+OBJDUMP     = arm-none-eabi-objdump
+RANLIB      = arm-none-eabi-ranlib
+STRIP       = arm-none-eabi-strip
+SIZE        = arm-none-eabi-size
+READELF     = arm-none-eabi-readelf
+DEBUG       = arm-none-eabi-gdb
+FLASH       = lm4flash
 CP          = cp -p
 RM          = rm -rf
 MV          = mv
