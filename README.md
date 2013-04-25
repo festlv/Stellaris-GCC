@@ -4,7 +4,7 @@ TIStellarisBuild
 Scripts to Build TI Stellaris ARM Toolchain, Libraries, and Programs using GCC.
 
 ##How-To:
-1. Download and build the Summon Arm Toolchain from [here][sat] (or install from packages- cross-arm-none-eabi-gcc in AUR)
+1. Download and build the Summon Arm Toolchain from [here][sat] (or install from your distro's packages- cross-arm-none-eabi-gcc in AUR)
 2. Download and build lm4flash tools from [here][lm4] (or install from AUR)
 3. Download and extract the Tiva Ware package from [here][sw]
 
