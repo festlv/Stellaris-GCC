@@ -6,7 +6,6 @@ TARGET      = proj0
 SOURCES    += proj0.c
 SOURCES    += stellariscommon.c
 SOURCES    += startup.c
-SOURCES    += syscalls.c
 
 #SOURCES  = $(wildcard src/*.c)
 
@@ -42,7 +41,7 @@ CFLAGS     += -mfpu=fpv4-sp-d16
 CFLAGS     += -Os
 CFLAGS     += -ffunction-sections
 CFLAGS     += -fdata-sections
-CFLAGS     += -MD
+CFLAGS     += -MD -g
 CFLAGS     += -std=c99
 CFLAGS     += -Wall
 CFLAGS     += -pedantic
@@ -73,7 +72,7 @@ LDFLAGS    += --entry ResetISR
 LDFLAGS    += --gc-sections
 LDFLAGS    += -Map .obj/$(TARGET).map
 LDFLAGS    += --cref -g
-LDFLAGS    += -nostdlib
+#LDFLAGS    += -nostdlib
 ###############################################################################
 
 
@@ -175,9 +174,9 @@ install: all
 	 then                                                                     \
 	     echo "  FLASH    bin/$(TARGET).bin";                                 \
 	 else                                                                     \
-	     echo sudo $(FLASH) bin/$(TARGET).bin;                                \
+	     echo $(FLASH) bin/$(TARGET).bin;                                \
 	 fi
-	@sudo $(FLASH) bin/$(TARGET).bin
+	$(FLASH) bin/$(TARGET).bin
 
 # Redo, Clean->Compile Fresh Image, and Install It.
 redo: clean all install
