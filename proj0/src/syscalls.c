@@ -9,19 +9,22 @@
 
 char *heap_end = 0;
 
+extern unsigned long __heap_end__;
+extern unsigned long __StackLimit;
+
 caddr_t _sbrk(unsigned int incr)
 {
-    extern unsigned long _heap_bottom;
-    extern unsigned long _heap_top;
+    extern unsigned long __end__;
+    extern unsigned long __heap_end__;
     static char *prev_heap_end;
 
     if (heap_end == 0) {
-        heap_end = (caddr_t)&_heap_bottom;
+        heap_end = (caddr_t)&__end__;
     }
 
     prev_heap_end = heap_end;
 
-    if (heap_end + incr > (caddr_t)&_heap_top) {
+    if (heap_end + incr > (caddr_t)&__heap_end__) {
         return (caddr_t)0;
     }
 

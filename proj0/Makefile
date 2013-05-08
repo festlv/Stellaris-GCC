@@ -41,7 +41,7 @@ CFLAGS     += -mthumb
 CFLAGS     += -mcpu=cortex-m4
 CFLAGS     += -mfloat-abi=$(FPU)
 CFLAGS     += -mfpu=fpv4-sp-d16
-CFLAGS     += -Os
+CFLAGS     += -O0
 CFLAGS     += -ffunction-sections
 CFLAGS     += -fdata-sections
 CFLAGS     += -MD
@@ -49,7 +49,9 @@ CFLAGS     += -std=c99
 CFLAGS     += -Wall
 CFLAGS     += -pedantic
 CFLAGS     += -DPART_TM4C1233H6PM
-CFLAGS     += -Dgcc --specs=nano.specs
+CFLAGS     += -Dgcc
+CFLAGS     += --specs=nano.specs
+CFLAGS     += -g
 CFLAGS     += -DTARGET_IS_BLIZZARD_RA1
 CFLAGS     += -fsingle-precision-constant
 CFLAGS     += -I$(SW_DIR)/driverlib/ -I$(SW_DIR) $(INCLUDES)
@@ -63,7 +65,7 @@ else
 
 	LIBGCC  = ${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
 	LIBM    = ${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
-	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libc_s.a}
+	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libg_s.a}
 	
 	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc/libdriver.a
 endif

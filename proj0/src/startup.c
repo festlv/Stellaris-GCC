@@ -7,19 +7,19 @@ static void IntDefaultHandler(void);
 extern int main(void);
 
 // Symbols Created by the Linker
-extern unsigned long _etext;
-extern unsigned long _data;
-extern unsigned long _edata;
+extern unsigned long __etext;
+extern unsigned long __data_start__;
+extern unsigned long __data_end__;
 extern unsigned long _bss;
 extern unsigned long _ebss;
 extern unsigned long _stack_bottom;
-extern unsigned long _stack_top;
+extern unsigned long __StackTop;
 extern unsigned long _heap_bottom;
 extern unsigned long _heap_top;
 
 __attribute__ ((section(".isr_vector")))void (* const g_pfnVectors[])(void) =
 {
-    (void (*)(void))((unsigned long) &_stack_top),
+    (void (*)(void))((unsigned long) &__StackTop),
     ResetISR,                               // The reset handler
     NmiSR,                                  // The NMI handler
     FaultISR,                               // The hard fault handler
@@ -190,14 +190,14 @@ void ResetISR(void)
     unsigned long *pulSrc, *pulDest;
 
     //Copy the data segment initializers from flash to SRAM.
-    pulSrc = &_etext;
-    for(pulDest = &_data; pulDest < &_edata; ){
+    pulSrc = &__etext;
+    for(pulDest = &__data_start__; pulDest < &__data_end__; ){
         *pulDest++ = *pulSrc++;
     }
 
-/*    // Zero fill the bss segment.
-    __asm("    ldr     r0, =_bss\n"
-          "    ldr     r1, =_ebss\n"
+    // Zero fill the bss segment.
+    __asm("    ldr     r0, =__bss_start__\n"
+          "    ldr     r1, =__bss_end__\n"
           "    mov     r2, #0\n"
           "    .thumb_func\n"
           "zero_loop:\n"
@@ -205,7 +205,7 @@ void ResetISR(void)
           "        it      lt\n"
           "        strlt   r2, [r0], #4\n"
           "        blt     zero_loop");
-*/
+
     HardwareInit();
 }
 
