@@ -18,6 +18,8 @@ INCLUDES    = -Isrc/include
 # Path to the root of your StellarisWare folder
 SW_DIR      = /opt/tivaware/
 
+TOOL        = /opt/gcc-arm-none-eabi
+
 # Location of a loader script, doesnt matter which one, they're the same
 LD_SCRIPT   = lm4f120h5qr.ld
 
@@ -47,7 +49,7 @@ CFLAGS     += -std=c99
 CFLAGS     += -Wall
 CFLAGS     += -pedantic
 CFLAGS     += -DPART_TM4C1233H6PM
-CFLAGS     += -Dgcc
+CFLAGS     += -Dgcc --specs=nano.specs
 CFLAGS     += -DTARGET_IS_BLIZZARD_RA1
 CFLAGS     += -fsingle-precision-constant
 CFLAGS     += -I$(SW_DIR)/driverlib/ -I$(SW_DIR) $(INCLUDES)
@@ -61,36 +63,36 @@ else
 
 	LIBGCC  = ${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
 	LIBM    = ${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
-	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
+	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libc_s.a}
 	
 	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc/libdriver.a
 endif
 
-LIBS        = '$(LIBM)' '$(LIBC)' '$(LIBGCC)' '$(DRIVER_LIB)'
+LIBS        = '$(LIBC)' '$(LIBGCC)' '$(DRIVER_LIB)'
 
 LDFLAGS    += -T $(LD_SCRIPT)
 LDFLAGS    += --entry ResetISR
 LDFLAGS    += --gc-sections
 LDFLAGS    += -Map .obj/$(TARGET).map
-LDFLAGS    += --cref -g
+LDFLAGS    += --cref -g 
 LDFLAGS    += -nostdlib
 ###############################################################################
 
 
 # Tool Definitions
 ###############################################################################
-CC          = arm-none-eabi-gcc
-LD          = arm-none-eabi-ld
-AR          = arm-none-eabi-ar
-AS          = arm-none-eabi-as
-NM          = arm-none-eabi-nm
-OBJCOPY     = arm-none-eabi-objcopy
-OBJDUMP     = arm-none-eabi-objdump
-RANLIB      = arm-none-eabi-ranlib
-STRIP       = arm-none-eabi-strip
-SIZE        = arm-none-eabi-size
-READELF     = arm-none-eabi-readelf
-DEBUG       = arm-none-eabi-gdb
+CC          = $(TOOL)/bin/arm-none-eabi-gcc
+LD          = $(TOOL)/bin/arm-none-eabi-ld
+AR          = $(TOOL)/bin/arm-none-eabi-ar
+AS          = $(TOOL)/bin/arm-none-eabi-as
+NM          = $(TOOL)/bin/arm-none-eabi-nm
+OBJCOPY     = $(TOOL)/bin/arm-none-eabi-objcopy
+OBJDUMP     = $(TOOL)/bin/arm-none-eabi-objdump
+RANLIB      = $(TOOL)/bin/arm-none-eabi-ranlib
+STRIP       = $(TOOL)/bin/arm-none-eabi-strip
+SIZE        = $(TOOL)/bin/arm-none-eabi-size
+READELF     = $(TOOL)/bin/arm-none-eabi-readelf
+DEBUG       = $(TOOL)/bin/arm-none-eabi-gdb
 FLASH       = lm4flash
 CP          = cp -p
 RM          = rm -rf
@@ -175,9 +177,9 @@ install: all
 	 then                                                                     \
 	     echo "  FLASH    bin/$(TARGET).bin";                                 \
 	 else                                                                     \
-	     echo sudo $(FLASH) bin/$(TARGET).bin;                                \
+	     echo $(FLASH) bin/$(TARGET).bin;                                \
 	 fi
-	@sudo $(FLASH) bin/$(TARGET).bin
+	$(FLASH) bin/$(TARGET).bin
 
 # Redo, Clean->Compile Fresh Image, and Install It.
 redo: clean all install
