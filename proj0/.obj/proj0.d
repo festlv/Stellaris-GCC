@@ -16,6 +16,7 @@
  /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/4.7.3/../../../../arm-none-eabi/include/sys/types.h \
  /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/4.7.3/../../../../arm-none-eabi/include/machine/types.h \
  /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/4.7.3/../../../../arm-none-eabi/include/sys/stdio.h \
+ /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/4.7.3/../../../../arm-none-eabi/include/math.h \
  /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/4.7.3/include/stdint.h \
  /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/4.7.3/../../../../arm-none-eabi/include/stdint.h \
  /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/4.7.3/include/stdbool.h \

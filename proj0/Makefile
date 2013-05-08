@@ -41,7 +41,7 @@ CFLAGS     += -mthumb
 CFLAGS     += -mcpu=cortex-m4
 CFLAGS     += -mfloat-abi=$(FPU)
 CFLAGS     += -mfpu=fpv4-sp-d16
-CFLAGS     += -O0
+CFLAGS     += -Os
 CFLAGS     += -ffunction-sections
 CFLAGS     += -fdata-sections
 CFLAGS     += -MD
@@ -65,7 +65,7 @@ else
 
 	LIBGCC  = ${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
 	LIBM    = ${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
-	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libg_s.a}
+	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libc_s.a}
 	
 	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc/libdriver.a
 endif
@@ -78,6 +78,8 @@ LDFLAGS    += --gc-sections
 LDFLAGS    += -Map .obj/$(TARGET).map
 LDFLAGS    += --cref -g 
 LDFLAGS    += -nostdlib
+
+LDFLAGS     += -u _printf_float
 ###############################################################################
 
 
